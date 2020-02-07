@@ -1,0 +1,109 @@
+---
+title: "Graphs"
+author: "Negar"
+date: "Jan 3, 2020"
+output:
+  ioslides_presentation: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Reading data
+
+
+```{r reading data, echo=FALSE}
+address <- paste(getwd(),"/Aggregate_16.RData", sep = "")
+load(address)
+#temp <- aggregate(as.numeric(data_main$preterm), by=list(carb=data_main$StCnty), mean)
+set.seed(1234)
+
+```
+
+
+##Graphs
+
+```{r scatter plots, cache=FALSE}
+par(mfrow=c(5,4))
+library(ggplot2)
+
+# Function to produce summary statistics (mean and +/- sd)
+data_summary <- function(x) {
+   m <- mean(x)
+   ymin <- m-sd(x)
+   ymax <- m+sd(x)
+   return(c(y=m,ymin=ymin,ymax=ymax))
+}
+
+
+
+#mother ager
+p1 <- ggplot(data_main, aes(x=Age_M, y=combgest)) + geom_violin() + ylim(32, 46)
+p1 + stat_summary(fun.data=data_summary, mult=1, geom="pointrange", color="red") + coord_flip() +
+    labs(x = "Age of Mother (years)", y = "Gestational Age (weeks)") + 
+    geom_hline(yintercept=37, linetype="dashed", color = "blue", size=1.5)
+
+#mother race
+p2 <- ggplot(data_main, aes(x=Race_M, y=combgest)) + geom_violin() + ylim(32, 46)
+p2 + stat_summary(fun.data=data_summary, mult=1, geom="pointrange", color="red") + coord_flip() +
+    labs(x = "Race of Mother", y = "Gestational Age (weeks)") + 
+    geom_hline(yintercept=37, linetype="dashed", color = "blue", size=1.5)
+
+
+#previous preterm
+p4 <- ggplot(data_main, aes(x=Previous_preterm, y=combgest)) + geom_violin() + ylim(32, 46)
+p4 + stat_summary(fun.data=data_summary, mult=1, geom="pointrange", color="red") + coord_flip() +
+    labs(x = "History of Preterm", y = "Gestational Age (weeks)") + 
+    geom_hline(yintercept=37, linetype="dashed", color = "blue", size=1.5)
+
+
+
+#Inadequate
+p6 <- ggplot(data_main, aes(x=Inadequate, y=combgest)) + geom_violin() + ylim(32, 46)
+p6 + stat_summary(fun.data=data_summary, mult=1, geom="pointrange", color="red") + coord_flip() +
+    labs(x = "Inadequate Care", y = "Gestational Age (weeks)") + 
+    geom_hline(yintercept=37, linetype="dashed", color = "blue", size=1.5)
+
+
+
+#cigarrette in 2nd trimester 
+p11 <- ggplot(data_main, aes(x=cig_2, y=combgest)) + geom_violin() + ylim(32, 46)
+p11 + stat_summary(fun.data=data_summary, mult=1, geom="pointrange", color="red") + coord_flip() +
+    labs(x = "Number of Cigarettes During 1st Trimester of Pregnancy", y = "Gestational Age (weeks)") + 
+    geom_hline(yintercept=37, linetype="dashed", color = "blue", size=1.5)
+
+
+#diabetes 
+p9 <- ggplot(data_main, aes(x=diab, y=combgest)) + geom_violin() + ylim(32, 46)
+p9 + stat_summary(fun.data=data_summary, mult=1, geom="pointrange", color="red") + coord_flip() +
+    labs(x = "Diabetes History", y = "Gestational Age (weeks)") + 
+    geom_hline(yintercept=37, linetype="dashed", color = "blue", size=1.5)
+
+
+#Hypertension
+p9 <- ggplot(data_main, aes(x=hyper, y=combgest)) + geom_violin() + ylim(32, 46)
+p9 + stat_summary(fun.data=data_summary, mult=1, geom="pointrange", color="red") + coord_flip() +
+    labs(x = "Hypertension History", y = "Gestational Age (weeks)") + 
+    geom_hline(yintercept=37, linetype="dashed", color = "blue", size=1.5)
+
+
+#risk factor: History of c-section
+p14 <- ggplot(data_main, aes(x=Previous_cesareans, y=combgest)) + geom_violin() + ylim(32, 46)
+p14 + stat_summary(fun.data=data_summary, mult=1, geom="pointrange", color="red") + coord_flip() +
+    labs(x = "History of Cesareans", y = "Gestational Age (weeks)") + 
+    geom_hline(yintercept=37, linetype="dashed", color = "blue", size=1.5)
+
+
+
+#dplural
+p18 <- ggplot(data_main, aes(x=as.factor(dplural), y=combgest)) + geom_violin() + ylim(24, 46)
+p18 + stat_summary(fun.data=data_summary, mult=1, geom="pointrange", color="red") + coord_flip() +
+    labs(x = "Plural", y = "Gestational Age (weeks)") + 
+    geom_hline(yintercept=37, linetype="dashed", color = "blue", size=1.5)
+
+```
+
+
+
+
